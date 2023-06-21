@@ -1,25 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import Title from './component/title/Title';
+import TimeLength from './component/title/timeLength/TimeLength';
+import View from './component/view/View';
 
-function App() {
+
+
+const App: React.FC = () => {
+  const [breakTime, setBreakTime] = useState(5);
+  const [sessionTime, setSessionTime] = useState(25);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Title />
+      <TimeLength 
+        breakTime={breakTime} 
+        sessionTime={sessionTime} 
+        setBreakTime={setBreakTime} 
+        setSessionTime={setSessionTime} 
+      />
+      <View sessionTime={sessionTime} />
+      <footer>
+        <p>Created by: Chenxi</p>
+      </footer>
+    </>
   );
 }
 

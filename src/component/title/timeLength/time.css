@@ -1,0 +1,15 @@
+.break-Session {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.breakLength, .sessionLength {
+    text-align: center;
+}
+
+.breakContainer {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
