@@ -1,0 +1,11 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.view {
+    border: 1px solid rgb(54, 85, 95);
+    background-color: lightblue;
+    padding: 10px;
+    border-radius: 10px;
+}

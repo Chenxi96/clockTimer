@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import './App.css';
 import Title from './component/title/Title';
-import TimeLength from './component/title/timeLength/TimeLength';
+import TimeLength from './component/timeLength/TimeLength';
 import View from './component/view/View';
 
 
 
 const App: React.FC = () => {
-  const [breakTime, setBreakTime] = useState(5);
-  const [sessionTime, setSessionTime] = useState(25);
+  const [breakTime, setBreakTime] = useState<number>(5);
+  const [sessionTime, setSessionTime] = useState<number>(25);
 
   return (
     <>
@@ -19,7 +19,7 @@ const App: React.FC = () => {
         setBreakTime={setBreakTime} 
         setSessionTime={setSessionTime} 
       />
-      <View sessionTime={sessionTime} />
+      <View sessionTime={sessionTime} breakTime={breakTime} />
       <footer>
         <p>Created by: Chenxi</p>
       </footer>
