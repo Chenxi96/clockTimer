@@ -19,7 +19,11 @@ const App: React.FC = () => {
         setBreakTime={setBreakTime} 
         setSessionTime={setSessionTime} 
       />
-      <View sessionTime={sessionTime} breakTime={breakTime} />
+      <View sessionTime={sessionTime} 
+      breakTime={breakTime} 
+      setBreakTime={setBreakTime} 
+      setSessionTime={setSessionTime}
+      />
       <footer>
         <p>Created by: Chenxi</p>
       </footer>

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import './views.css'
 
 export default function View( props: any ) {
-    const {sessionTime, breakTime } = props;
+    const {sessionTime, breakTime, setSessionTime, setBreakTime } = props;
     const [isSession, setIsSession] = useState('Session');
 
     
@@ -50,11 +50,11 @@ export default function View( props: any ) {
         }, 1000)
         
 
-        document.getElementById('stop')!.addEventListener('click', function() {
+        document.getElementById('start_stop')!.addEventListener('click', function() {
             pause = true
         })
 
-        document.getElementById('start')!.addEventListener('click', function() {
+        document.getElementById('start_stop')!.addEventListener('click', function() {
             pause = false
         })
 
@@ -76,8 +76,12 @@ export default function View( props: any ) {
                         <div id="time-left">
                         </div>
                     </div>
-                    <button id="start">Start</button>
-                    <button id='stop'>Pause</button>
+                    <button id="start_stop">Start</button>
+                    <button id='start_stop'>Pause</button>
+                    <button id="reset" onClick={() => {
+                        setSessionTime(25)
+                        setBreakTime(5)
+                    }}>Reset</button>
                 </div>
             </div>
             
