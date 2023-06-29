@@ -10,7 +10,6 @@ export default function View( props: any ) {
         let pause = true;
         let minutes = sessionTime;
         let seconds = 0;
-        console.log(minutes)
 
         function parseMin() {
             if(minutes < 10) {
@@ -29,40 +28,51 @@ export default function View( props: any ) {
         }
         
         document.getElementById('time-left')!.innerHTML = `${parseMin()}:${parseSec()}`
+
         const timer = setInterval(() => {
-            document.getElementById('time-left')!.innerHTML = `${parseMin()}:${parseSec()}`
+            
             if(!pause){
-                console.log(minutes)
                 seconds--
                 if(seconds < 0) {
                     minutes--
-                    console.log(minutes)
                     seconds = 59;
                 }
                 
-                if(minutes < 0) {
-                    console.log('log3')
+                if(minutes < 0 && isSession === 'Session') {
                     minutes = breakTime;
                     seconds = 0;
                     setIsSession('Break')
-                }
-            } 
+                } 
+                
+                if(minutes < 0 && isSession === 'Break') {
+                    minutes = sessionTime;
+                    seconds = 0;
+                    setIsSession('Session')
+                } 
+            }
+
+            document.getElementById('time-left')!.innerHTML = `${parseMin()}:${parseSec()}`
+
         }, 1000)
         
-
         document.getElementById('start_stop')!.addEventListener('click', function() {
-            pause = true
-        })
+            pause ? pause = false : pause = true;
+        });
 
-        document.getElementById('start_stop')!.addEventListener('click', function() {
-            pause = false
-        })
+
+        document.getElementById('reset')!.addEventListener('click', function() {
+            setIsSession('Session')
+            setSessionTime(25)
+            setBreakTime(5)
+            minutes = sessionTime
+            seconds = 0
+        });
 
         return () => {
             clearInterval(timer)
         }
 
-    }, [sessionTime, breakTime])
+    }, [sessionTime, breakTime, setIsSession, setBreakTime, setSessionTime, isSession])
 
     /* this is the screen would be */
     return (
@@ -76,12 +86,12 @@ export default function View( props: any ) {
                         <div id="time-left">
                         </div>
                     </div>
-                    <button id="start_stop">Start</button>
-                    <button id='start_stop'>Pause</button>
-                    <button id="reset" onClick={() => {
-                        setSessionTime(25)
-                        setBreakTime(5)
-                    }}>Reset</button>
+                    <button id="start_stop">Start/Stop</button>
+                    <button id="reset">Reset</button>
+                    <audio 
+                        id="beep" 
+                        preload="auto" 
+                        src="https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav"></audio>
                 </div>
             </div>
             
