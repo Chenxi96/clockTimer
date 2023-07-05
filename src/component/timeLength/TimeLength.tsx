@@ -1,4 +1,4 @@
-import React,{useEffect, useState} from "react";
+import React from "react";
 import './time.css';
 
 
@@ -22,7 +22,7 @@ const TimeLength = (props: any) => {
                     </svg>
                 </div>
                 <div id="break-length">
-                {props.breakTime}
+                {breakTime}
                 </div>
                 <div id="break-decrement" onClick={() => {
                     if(breakTime > 1) {
@@ -48,7 +48,7 @@ const TimeLength = (props: any) => {
                     </svg>
                 </div>
                 <div id="session-length">
-                    {props.sessionTime}
+                    {sessionTime}
                 </div>
                 <div id="session-decrement" onClick={() => {
                     if(sessionTime > 1) {

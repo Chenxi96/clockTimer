@@ -4,75 +4,90 @@ import './views.css'
 export default function View( props: any ) {
     const {sessionTime, breakTime, setSessionTime, setBreakTime } = props;
     const [isSession, setIsSession] = useState('Session');
-
+    const [pause, setPause] = useState<boolean>(true)
+    const [minutes, setMinutes] = useState<number>(0);
+    const [seconds, setSeconds] = useState<number>(0);
     
     useEffect(() => {
-        let pause = true;
-        let minutes = sessionTime;
-        let seconds = 0;
+        const x = document.getElementById('beep');
 
-        function parseMin() {
-            if(minutes < 10) {
-                return `0${minutes}`
-            } else {
-                return `${minutes}`
-            }
-        }
-
-        function parseSec() {
-            if(seconds < 10) {
-                return `0${seconds}`
-            } else {
-                return `${seconds}`
-            }
-        }
-        
-        document.getElementById('time-left')!.innerHTML = `${parseMin()}:${parseSec()}`
 
         const timer = setInterval(() => {
-            
+            console.log(seconds)
             if(!pause){
-                seconds--
-                if(seconds < 0) {
-                    minutes--
-                    seconds = 59;
+                setSeconds(seconds - 1)
+                if(seconds <= 0) {
+                    setMinutes(minutes - 1);
+                    console.log(minutes)
+                    setSeconds(59);
                 }
                 
-                if(minutes < 0 && isSession === 'Session') {
-                    minutes = breakTime;
-                    seconds = 0;
-                    setIsSession('Break')
+                if(minutes <= 0 && seconds <= 0 && isSession === 'Session') {
+                    console.log('break')
+                    setMinutes(breakTime);
+                    setSeconds(0);
+                    setIsSession('Break');
+                    (x as HTMLAudioElement).play();
                 } 
                 
-                if(minutes < 0 && isSession === 'Break') {
-                    minutes = sessionTime;
-                    seconds = 0;
-                    setIsSession('Session')
+                if(minutes <= 0 && seconds <= 0 && isSession === 'Break') {
+                    console.log('session')
+                    setMinutes(sessionTime);
+                    setSeconds(0);
+                    setIsSession('Session');
+                    (x as HTMLAudioElement).play();
                 } 
-            }
-
-            document.getElementById('time-left')!.innerHTML = `${parseMin()}:${parseSec()}`
-
+            } 
         }, 1000)
+
+        const timer1 = setInterval(() => {
+            if(pause) {
+                setMinutes(sessionTime)
+            }
+        })
         
         document.getElementById('start_stop')!.addEventListener('click', function() {
-            pause ? pause = false : pause = true;
+            if(!pause) {
+                setPause(true)
+            } else {
+                setPause(false)
+            }
+
         });
 
 
         document.getElementById('reset')!.addEventListener('click', function() {
-            setIsSession('Session')
-            setSessionTime(25)
-            setBreakTime(5)
-            minutes = sessionTime
-            seconds = 0
+            setIsSession('Session');
+            setSessionTime(25);
+            setBreakTime(5);
+            setMinutes(sessionTime);
+            setSeconds(0);
+            setPause(true);
+            (x as HTMLAudioElement).load();
         });
 
         return () => {
             clearInterval(timer)
+            clearInterval(timer1)
         }
 
-    }, [sessionTime, breakTime, setIsSession, setBreakTime, setSessionTime, isSession])
+    }, [pause, setPause, setMinutes, setSeconds, minutes, seconds, sessionTime, breakTime, setIsSession, setBreakTime, setSessionTime, isSession])
+
+    function parseSec() {
+        if(seconds < 10) {
+            return `0${seconds}`
+        } else {
+            return `${seconds}`
+        }
+    }
+
+    function parseMin() {
+        if(minutes < 10) {
+            return `0${minutes}`
+        } else {
+            return `${minutes}`
+        }
+    }
 
     /* this is the screen would be */
     return (
@@ -84,6 +99,7 @@ export default function View( props: any ) {
                             {isSession}
                         </div>
                         <div id="time-left">
+                            {`${parseMin()}:${parseSec()}`}
                         </div>
                     </div>
                     <button id="start_stop">Start/Stop</button>
